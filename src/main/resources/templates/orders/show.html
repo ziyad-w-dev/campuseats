@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="'Order ' + ${orderId} + ' · CampusEats'">Order · CampusEats</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page">
+    <p><a th:href="@{/vendors}">← All vendors</a></p>
+
+    <section class="cart" aria-labelledby="cart-heading" th:attr="data-order-id=${orderId}">
+        <h1 id="cart-heading" tabindex="-1" th:text="'Order #' + ${orderId}">Order</h1>
+
+        <p id="cart-error" class="cart-error" role="alert" aria-live="polite"></p>
+
+        <p id="cart-empty" th:hidden="${!#lists.isEmpty(cartItems)}">Your cart is empty.</p>
+        <ul id="cart-items" class="cart-items">
+            <th:block th:each="item : ${cartItems}"><li th:replace="~{fragments/order_item :: row(${item})}"></li></th:block>
+        </ul>
+
+        <p class="cart-total">Total:
+            <strong id="cart-total"
+                    th:text="${#numbers.formatDecimal(cartTotal, 1, 'NONE', 2, 'POINT')}">0.00</strong>
+        </p>
+    </section>
+</main>
+<script th:src="@{/js/cart.js}"></script>
+</body>
+</html>

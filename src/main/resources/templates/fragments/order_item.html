@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--
+  ONE cart row. Rails equivalent: the partial app/views/order_items/_order_item.html.erb,
+  used with <%= render order_item %>. Here: th:replace="~{fragments/order_item :: row(${item})}".
+  static/js/cart.js builds the same markup when it adds a row without reloading the page.
+-->
+<li th:fragment="row(item)" class="cart-row" th:attr="data-order-item-id=${item.id}">
+    <span class="cart-row-name" th:text="${item.menuItemName}">Dish name</span>
+    <span class="cart-row-quantity" th:text="'× ' + ${item.quantity}">× 1</span>
+    <span class="cart-row-total"
+          th:text="${#numbers.formatDecimal(item.lineTotal, 1, 'NONE', 2, 'POINT')}">0.00</span>
+    <button type="button" class="remove-button"
+            th:attr="data-order-item-id=${item.id},
+                     aria-label='Remove ' + ${item.menuItemName} + ' from cart'">Remove</button>
+</li>
+</body>
+</html>

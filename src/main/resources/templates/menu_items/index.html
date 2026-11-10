@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${vendor.name} + ' · CampusEats'">Menu · CampusEats</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<main class="page">
+    <p><a th:href="@{/vendors}">← All vendors</a></p>
+    <h1 th:text="${vendor.name}">Vendor</h1>
+
+    <div class="menu-layout">
+        <section class="menu" aria-labelledby="menu-heading">
+            <h2 id="menu-heading">Menu</h2>
+            <ul class="menu-list">
+                <li th:each="menuItem : ${menuItems}" class="menu-item">
+                    <span class="menu-item-name" th:text="${menuItem.name}">Dish</span>
+                    <span class="badge" th:if="${menuItem.soldOut}">Sold out</span>
+                    <span class="menu-item-price"
+                          th:text="${#numbers.formatDecimal(menuItem.price, 1, 'NONE', 2, 'POINT')}">0.00</span>
+                    <button type="button" class="add-button"
+                            th:attr="data-menu-item-id=${menuItem.id},
+                                     aria-label='Add ' + ${menuItem.name} + ' to cart'">Add to cart</button>
+                </li>
+            </ul>
+        </section>
+
+        <section class="cart" aria-labelledby="cart-heading" th:attr="data-order-id=${orderId}">
+            <h2 id="cart-heading" tabindex="-1">Your cart</h2>
+
+            <p id="cart-error" class="cart-error" role="alert" aria-live="polite"></p>
+
+            <p id="cart-empty" th:hidden="${!#lists.isEmpty(cartItems)}">Your cart is empty.</p>
+            <ul id="cart-items" class="cart-items">
+                <th:block th:each="item : ${cartItems}"><li th:replace="~{fragments/order_item :: row(${item})}"></li></th:block>
+            </ul>
+
+            <p class="cart-total">Total:
+                <strong id="cart-total"
+                        th:text="${#numbers.formatDecimal(cartTotal, 1, 'NONE', 2, 'POINT')}">0.00</strong>
+            </p>
+            <p><a th:href="@{/orders/{id}(id=${orderId})}">View full order</a></p>
+        </section>
+    </div>
+</main>
+<script th:src="@{/js/cart.js}"></script>
+</body>
+</html>
