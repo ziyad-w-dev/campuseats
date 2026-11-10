@@ -12,7 +12,7 @@ H2 (in-memory), Lombok, vanilla JavaScript.
 
 ## Requirements
 
-- Java 21 (JDK). Check with `java -version`.
+- Java 21 or newer (JDK). Check with `java -version`.
 - Internet access on the first run, to download dependencies.
 - No database or Maven install needed: H2 runs in memory and the Maven wrapper is included.
 
